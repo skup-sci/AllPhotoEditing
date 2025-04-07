@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "verify-commit": ".\\scripts\\verify-and-commit.bat",
+    "save-point": "git add . && git commit -m"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
