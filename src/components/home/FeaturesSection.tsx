@@ -124,9 +124,14 @@ export function FeaturesSection() {
 
           {/* Right: Features List */}
           <div>
-            <div className="mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">
-                AI-Powered Features That Set Us Apart
+            <div className="mb-8 max-w-3xl">
+              <h2 className="flex flex-wrap items-center gap-2 text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
+                <span className="text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-blue-600">
+                  AI-Powered Features That Set Us Apart
+                </span>
+                <span className="text-lg text-violet-600 font-semibold animate-pulse inline-flex items-center">
+                  Coming Soon!
+                </span>
               </h2>
               <p className="text-xl text-slate-600">
                 Our cutting-edge technology delivers faster, more consistent results while giving you complete creative control.

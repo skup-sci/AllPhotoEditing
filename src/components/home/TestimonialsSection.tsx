@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { motion } from "framer-motion";
 import {
   Carousel,
   CarouselContent,
@@ -59,15 +58,6 @@ const testimonials = [
     rating: 5,
     quote: "The twilight conversions look so natural, you'd never know they weren't taken at dusk. My listings get significantly more engagement when I use their editing services.",
   },
-];
-
-const companyLogos = [
-  { name: "Company 1", logo: "/images/partner-logo-1.svg" },
-  { name: "Company 2", logo: "/images/partner-logo-2.svg" },
-  { name: "Company 3", logo: "/images/partner-logo-3.svg" },
-  { name: "Company 4", logo: "/images/partner-logo-4.svg" },
-  { name: "Company 5", logo: "/images/partner-logo-5.svg" },
-  { name: "Company 6", logo: "/images/partner-logo-6.svg" },
 ];
 
 function StarRating({ rating }: { rating: number }) {
@@ -160,7 +150,7 @@ export function TestimonialsSection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 max-w-5xl mx-auto">
           <div className="text-center">
             <p className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
-              50k+
+              1k+
             </p>
             <p className="text-slate-600">Photos Edited Daily</p>
           </div>
@@ -172,7 +162,7 @@ export function TestimonialsSection() {
           </div>
           <div className="text-center">
             <p className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
-              10k+
+              100+
             </p>
             <p className="text-slate-600">Active Users</p>
           </div>
@@ -181,34 +171,6 @@ export function TestimonialsSection() {
               24h
             </p>
             <p className="text-slate-600">Turnaround Time</p>
-          </div>
-        </div>
-
-        {/* Trusted by logos */}
-        <div className="mt-16">
-          <h3 className="text-center text-sm uppercase font-medium text-slate-500 tracking-wider mb-8">
-            Trusted by industry leaders
-          </h3>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-70">
-            {companyLogos.map((company, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="h-8 md:h-10"
-              >
-                <Image
-                  src={company.logo}
-                  alt={company.name}
-                  width={120}
-                  height={40}
-                  className="h-full w-auto grayscale hover:grayscale-0 transition-all"
-                  crossOrigin="anonymous"
-                />
-              </motion.div>
-            ))}
           </div>
         </div>
       </div>

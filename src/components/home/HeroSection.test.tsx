@@ -1,10 +1,24 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { HeroSection } from './HeroSection';
-import '@testing-library/jest-dom/extend-expect'; // Importing jest-dom matchers
+import { mockRouter } from '../../../test/__mocks__/nextRouter';
+
+jest.mock('next/router', () => ({
+  useRouter: () => mockRouter
+}));
+
+// Mock global Image constructor
+const mockImage = {
+  onload: jest.fn(),
+  onerror: jest.fn(),
+};
+
+// @ts-ignore
+global.Image = jest.fn().mockImplementation(() => mockImage);
 
 describe('HeroSection', () => {
   it('renders correctly', () => {
-    const { getByText } = render(<HeroSection />);
-    expect(getByText(/Transform Your Photos/i)).toBeInTheDocument();
+    render(<HeroSection />);
+    expect(screen.getByText(/Transform Your Photos/i)).toBeInTheDocument();
   });
 });

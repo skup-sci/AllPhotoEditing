@@ -44,7 +44,7 @@ const navigationLinks = [
 ];
 
 export function Header() {
-  const pathname = usePathname();
+  const pathname = usePathname() || '';
   const [scrolled, setScrolled] = React.useState(false);
 
   React.useEffect(() => {
@@ -76,7 +76,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-1">
+        <nav role="navigation" aria-label="Desktop navigation" className="hidden md:flex items-center space-x-1">
           {navigationLinks.map((item) =>
             item.submenu ? (
               <DropdownMenu key={item.name}>
@@ -121,10 +121,10 @@ export function Header() {
               </Link>
             )
           )}
-        </div>
+        </nav>
 
         {/* Action Buttons */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-3" role="navigation" aria-label="Authentication">
           <Button variant="outline" size="sm" asChild>
             <Link href="/login">Login</Link>
           </Button>
@@ -142,7 +142,7 @@ export function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-            <nav className="flex flex-col gap-4 mt-8">
+            <nav role="navigation" aria-label="Mobile navigation" className="flex flex-col gap-4 mt-8">
               {navigationLinks.map((item) => (
                 <div key={item.name}>
                   {item.submenu ? (

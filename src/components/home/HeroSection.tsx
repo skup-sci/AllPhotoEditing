@@ -38,25 +38,56 @@ export function HeroSection() {
 
   // Pre-load all images for smoother transitions
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const imagePromises: Promise<HTMLImageElement>[] = [];
 
     // Create image loading promises for all slides
     photoSlides.forEach(slide => {
-const beforeImg = document.createElement('img');
-beforeImg.src = slide.before;
+      // Load before image
+      const beforeImg = new window.Image();
+      beforeImg.src = slide.before;
+      imagePromises.push(
+        new Promise<HTMLImageElement>((resolve, reject) => {
+          beforeImg.onload = () => resolve(beforeImg);
+          beforeImg.onerror = () => {
+            console.error(`Failed to load image: ${slide.before}`);
+            reject(new Error(`Failed to load image: ${slide.before}`));
+          };
+        })
+      );
 
-      imagePromises.push(new Promise<HTMLImageElement>((resolve) => { beforeImg.onload = () => resolve(beforeImg); }));
-
-const afterImg = document.createElement('img');
-afterImg.src = slide.after;
-
-      imagePromises.push(new Promise<HTMLImageElement>((resolve) => { afterImg.onload = () => resolve(afterImg); }));
+      // Load after image
+      const afterImg = new window.Image();
+      afterImg.src = slide.after;
+      imagePromises.push(
+        new Promise<HTMLImageElement>((resolve, reject) => {
+          afterImg.onload = () => resolve(afterImg);
+          afterImg.onerror = () => {
+            console.error(`Failed to load image: ${slide.after}`);
+            reject(new Error(`Failed to load image: ${slide.after}`));
+          };
+        })
+      );
     });
 
     // When all images are loaded, set loaded state to true
-    Promise.all(imagePromises).then(() => {
-      setIsLoaded(true);
-    });
+    Promise.all(imagePromises)
+      .then(() => {
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.error('Error loading images:', error);
+        // Still set isLoaded to true so we can show whatever images did load
+        setIsLoaded(true);
+      });
+
+    return () => {
+      // Cleanup: Cancel any pending image loads
+      imagePromises.forEach(promise => {
+        promise.catch(() => {}); // Ignore any pending errors
+      });
+    };
   }, []);
 
   useEffect(() => {

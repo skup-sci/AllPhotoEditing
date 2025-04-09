@@ -13,8 +13,7 @@ import {
   RiSunLine,
   RiScissorsCutLine,
   RiPlantLine,
-  RiVideoLine,
-  RiRobot2Line
+  RiVideoLine
 } from "react-icons/ri";
 
 const services = [
@@ -72,15 +71,6 @@ const services = [
     image: "/images/service-video-editing.jpg",
     color: "from-cyan-500 to-blue-500",
   },
-  {
-    id: "ai-enhancement",
-    title: "AI Enhancement",
-    description: "Leverage AI technology for automated photo improvements, smart object removal, and intelligent sky replacement.",
-    icon: RiRobot2Line,
-    link: "/services/ai-enhancement",
-    image: "/images/service-ai-enhancement.jpg",
-    color: "from-indigo-500 to-violet-500",
-  },
 ];
 
 // Animation variants for staggered animations - simplified for performance
@@ -104,14 +94,22 @@ const itemVariants = {
   },
 };
 
+const defaultImage = "/images/service-photo-editing.jpg"; // Fallback image
+
 // Preload images before rendering for better performance
 const preloadImages = (): Promise<void[]> => {
+  if (typeof window === 'undefined') return Promise.resolve([]);
+  
   return Promise.all(
     services.map(service => {
-      return new Promise<void>((resolve, reject) => {
+      return new Promise<void>((resolve) => {
         const img = new window.Image();
         img.onload = () => resolve();
-        img.onerror = reject;
+        img.onerror = () => {
+          console.warn(`Failed to load image: ${service.image}, using fallback`);
+          service.image = defaultImage; // Use fallback image on error
+          resolve(); // Resolve anyway to allow other images to load
+        };
         img.src = service.image;
       });
     })
@@ -126,7 +124,12 @@ export function ServicesSection() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('Current view status:', { isInView, imagesPreloaded });
+    if (typeof window === 'undefined') {
+      setLoading(false);
+      setImagesPreloaded(true);
+      return;
+    }
+
     setLoading(true);
     preloadImages()
       .then(() => {
@@ -135,9 +138,9 @@ export function ServicesSection() {
       })
       .catch((err) => {
         console.error('Failed to preload images:', err);
-        setError('Failed to load images');
+        // Don't set error state since we're handling individual image failures gracefully
         setLoading(false);
-        // Still show content even if preload fails
+        // Still show content even if some images failed to preload
         setImagesPreloaded(true);
       });
   }, []);
@@ -178,6 +181,13 @@ export function ServicesSection() {
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                       crossOrigin="anonymous"
                       loading="lazy"
+                      onError={(e) => {
+                        // Fallback for next/image component
+                        const target = e.target as HTMLImageElement;
+                        if (target.src !== defaultImage) {
+                          target.src = defaultImage;
+                        }
+                      }}
                     />
                     <div className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm p-2 rounded-full">
                       <service.icon className="h-6 w-6 text-slate-900" />
