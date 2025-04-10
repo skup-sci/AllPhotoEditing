@@ -32,7 +32,12 @@ export function CtaSection() {
                     <RiArrowRightLine className="text-lg" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10" asChild>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="border-white hover:bg-white hover:text-violet-600 transition-colors" 
+                  asChild
+                >
                   <Link href="/contact">Contact sales</Link>
                 </Button>
               </div>
